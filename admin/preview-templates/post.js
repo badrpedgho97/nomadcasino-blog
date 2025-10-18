@@ -7,6 +7,7 @@ const html = htm.bind(h);
 const Post = createClass({
   render() {
     const entry = this.props.entry;
+    const date = entry.getIn(["data", "date"]); // Get the date value
 
     return html`
       <main>
@@ -14,14 +15,12 @@ const Post = createClass({
           <h1>${entry.getIn(["data", "title"], null)}</h1>
           <p>
             <small>
-              <time
-                >${
-                  format(
-                    entry.getIn(["data", "date"], new Date()),
-                    "dd MMM, yyyy"
-                  )
-                }</time
-              >
+              <time>
+                ${
+                  // Check if date exists before formatting it
+                  date ? format(new Date(date), "dd MMM, yyyy") : ""
+                }
+              </time>
               ${" by Author"}
             </small>
           </p>
