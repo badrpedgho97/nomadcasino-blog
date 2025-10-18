@@ -7,7 +7,11 @@ const html = htm.bind(h);
 const Post = createClass({
   render() {
     const entry = this.props.entry;
-    const date = entry.getIn(["data", "date"]); // Get the date value
+    
+    // This is the new fix:
+    // Get the date value, and if it's null, undefined, or "",
+    // use today's date as a default.
+    const date = entry.getIn(["data", "date"]) || new Date();
 
     return html`
       <main>
@@ -17,8 +21,8 @@ const Post = createClass({
             <small>
               <time>
                 ${
-                  // Check if date exists before formatting it
-                  date ? format(new Date(date), "dd MMM, yyyy") : ""
+                  // This now formats a valid date.
+                  format(new Date(date), "dd MMM, yyyy")
                 }
               </time>
               ${" by Author"}
